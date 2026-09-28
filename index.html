@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Daily Workout Tracker</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --completed-color: #22c55e;
+            --border-color: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 15px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-bottom: 50px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        h1 {
+            color: var(--accent-color);
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .day-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .day-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: #0f172a;
+            border-radius: 10px;
+            height: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--completed-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .exercise-list {
+            list-style: none;
+        }
+
+        .exercise-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background-color: #0f172a;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .exercise-item:hover {
+            border-color: var(--accent-color);
+        }
+
+        .exercise-item.completed {
+            background-color: rgba(34, 197, 94, 0.1);
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+
+        .exercise-item.completed .exercise-name {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .checkbox {
+            width: 22px;
+            height: 22px;
+            border-radius: 5px;
+            border: 2px solid var(--text-muted);
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .exercise-item.completed .checkbox {
+            background-color: var(--completed-color);
+            border-color: var(--completed-color);
+        }
+
+        .checkbox::after {
+            content: '✓';
+            color: white;
+            font-weight: bold;
+            display: none;
+            font-size: 14px;
+        }
+
+        .exercise-item.completed .checkbox::after {
+            display: block;
+        }
+
+        .exercise-details {
+            flex-grow: 1;
+        }
+
+        .exercise-name {
+            font-weight: 600;
+            font-size: 0.98rem;
+        }
+
+        .exercise-reps {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .reset-btn {
+            background-color: transparent;
+            color: #f43f5e;
+            border: 1px solid #f43f5e;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+        }
+
+        .reset-btn:hover {
+            background-color: #f43f5e;
+            color: white;
+        }
+
+        .global-actions {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .rest-day-box {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(56, 189, 248, 0.05);
+            border-radius: 8px;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Workout Tracker</h1>
+        <p class="subtitle">Daily Routine & Progress Reset Application</p>
+    </header>
+
+    <div class="global-actions">
+        <button class="reset-btn" onclick="resetAllWorkouts()">Sabhi Workouts Uncheck / Reset Karein</button>
+    </div>
+
+    <div id="workout-container"></div>
+
+    <script>
+        // Workout Data Structure
+        const workoutPlan = [
+            {
+                day: "Day 1: Chest + Triceps (+ Abs)",
+                exercises: [
+                    { name: "Incline Dumbbell Press (Chest)", reps: "3 Sets x 10–12 Reps" },
+                    { name: "Dumbbell Flyes / Chest Press Machine", reps: "3 Sets x 12 Reps" },
+                    { name: "Tricep Rope Pushdowns", reps: "3 Sets x 12 Reps" },
+                    { name: "Overhead Dumbbell Extension (Triceps)", reps: "3 Sets x 12 Reps" },
+                    { name: "Abs: Plank", reps: "3 Sets x 45 Sec" },
+                    { name: "Abs: Leg Raises", reps: "3 Sets x 12-15 Reps" }
+                ]
+            },
+            {
+                day: "Day 2: Back + Biceps (+ Light Cardio)",
+                exercises: [
+                    { name: "Lat Pulldown (Back)", reps: "3 Sets x 10–12 Reps" },
+                    { name: "Seated Cable Row (Back)", reps: "3 Sets x 10–12 Reps" },
+                    { name: "Dumbbell Bicep Curls", reps: "3 Sets x 12 Reps" },
+                    { name: "Hammer Curls (Biceps)", reps: "3 Sets x 12 Reps" },
+                    { name: "Cardio: Incline Treadmill Walk", reps: "10–15 mins" }
+                ]
+            },
+            {
+                day: "Day 3: Quads + Glutes (+ Abs)",
+                exercises: [
+                    { name: "Goblet Squats (Quads & Glutes)", reps: "3 Sets x 10–12 Reps" },
+                    { name: "Leg Extensions (Quads Focus)", reps: "3 Sets x 12–15 Reps" },
+                    { name: "Hip Thrusts / Glute Bridges (Glutes Focus)", reps: "3 Sets x 12 Reps" },
+                    { name: "Walking Lunges", reps: "3 Sets x 10 Steps (har leg)" },
+                    { name: "Abs: Russian Twists", reps: "3 Sets x 20 Reps" },
+                    { name: "Abs: Crunches", reps: "3 Sets x 15 Reps" }
+                ]
+            },
+            {
+                day: "Day 4: Shoulders + Abs (+ Light Cardio)",
+                exercises: [
+                    { name: "Dumbbell Shoulder Press", reps: "3 Sets x 10–12 Reps" },
+                    { name: "Lateral Raises (Side Shoulders)", reps: "3 Sets x 12–15 Reps" },
+                    { name: "Face Pulls (Rear Shoulders & Posture)", reps: "3 Sets x 15 Reps" },
+                    { name: "Abs: Mountain Climbers", reps: "3 Sets x 30 Sec" },
+                    { name: "Abs: Reverse Crunches", reps: "3 Sets x 12 Reps" },
+                    { name: "Cardio: Cycling / Elliptical", reps: "10–15 mins" }
+                ]
+            },
+            {
+                day: "Day 5: Hamstrings + Calves (+ Abs)",
+                exercises: [
+                    { name: "Romanian Deadlifts (Hamstrings Focus)", reps: "3 Sets x 10–12 Reps" },
+                    { name: "Lying Leg Curls (Hamstrings)", reps: "3 Sets x 12 Reps" },
+                    { name: "Standing Calf Raises", reps: "3 Sets x 15–20 Reps" },
+                    { name: "Seated Calf Raises", reps: "3 Sets x 15 Reps" },
+                    { name: "Abs: Bicycle Crunches", reps: "3 Sets x 15 Reps" },
+                    { name: "Abs: Side Planks", reps: "3 Sets x 30 Sec" }
+                ]
+            },
+            {
+                day: "Day 6: Full Core / Abs + Active Recovery Cardio",
+                exercises: [
+                    { name: "Hanging / Captain's Chair Knee Raises", reps: "3 Sets x 12 Reps" },
+                    { name: "Plank Hold", reps: "3 Sets x 45-60 Sec" },
+                    { name: "Deadbug & Bird-Dog (Deep Core)", reps: "3 Sets x 12 Reps" },
+                    { name: "Incline Treadmill Brisk Walk", reps: "20 Minutes" },
+                    { name: "Full Body Stretching", reps: "10 Minutes" }
+                ]
+            },
+            {
+                day: "Day 7: REST DAY",
+                isRestDay: true
+            }
+        ];
+
+        // Auto-reset logic checking date change
+        function checkAndResetDaily() {
+            const today = new Date().toDateString();
+            const lastSavedDate = localStorage.getItem('workout_last_date');
+
+            if (lastSavedDate !== today) {
+                // Naya din aagaya hai - reset saare state
+                localStorage.removeItem('workout_state');
+                localStorage.setItem('workout_last_date', today);
+            }
+        }
+
+        // Get saved workout state
+        function getSavedState() {
+            const state = localStorage.getItem('workout_state');
+            return state ? JSON.parse(state) : {};
+        }
+
+        // Save state
+        function saveState(state) {
+            localStorage.setItem('workout_state', JSON.stringify(state));
+        }
+
+        // Toggle completion status
+        function toggleExercise(dayIndex, exIndex) {
+            const state = getSavedState();
+            const key = `${dayIndex}_${exIndex}`;
+            
+            state[key] = !state[key];
+            saveState(state);
+            
+            renderWorkouts();
+        }
+
+        // Reset single day
+        function resetDay(dayIndex) {
+            const state = getSavedState();
+            workoutPlan[dayIndex].exercises.forEach((_, exIndex) => {
+                delete state[`${dayIndex}_${exIndex}`];
+            });
+            saveState(state);
+            renderWorkouts();
+        }
+
+        // Reset all days
+        function resetAllWorkouts() {
+            if (confirm("Kya aap saare days ke workouts reset karna chahte hain?")) {
+                localStorage.removeItem('workout_state');
+                renderWorkouts();
+            }
+        }
+
+        // Render UI
+        function renderWorkouts() {
+            const container = document.getElementById('workout-container');
+            const state = getSavedState();
+            container.innerHTML = '';
+
+            workoutPlan.forEach((dayData, dayIndex) => {
+                const dayCard = document.createElement('div');
+                dayCard.className = 'day-card';
+
+                if (dayData.isRestDay) {
+                    dayCard.innerHTML = `
+                        <div class="day-header">
+                            <div class="day-title">${dayData.day}</div>
+                        </div>
+                        <div class="rest-day-box">
+                            😴 Aaj Rest Day hai! Recovery aur proper sleep lein.
+                        </div>
+                    `;
+                } else {
+                    let completedCount = 0;
+                    const totalExercises = dayData.exercises.length;
+
+                    dayData.exercises.forEach((_, exIndex) => {
+                        if (state[`${dayIndex}_${exIndex}`]) completedCount++;
+                    });
+
+                    const progressPercent = Math.round((completedCount / totalExercises) * 100);
+
+                    let exercisesHTML = '';
+                    dayData.exercises.forEach((ex, exIndex) => {
+                        const isCompleted = !!state[`${dayIndex}_${exIndex}`];
+                        exercisesHTML += `
+                            <li class="exercise-item ${isCompleted ? 'completed' : ''}" onclick="toggleExercise(${dayIndex}, ${exIndex})">
+                                <div class="checkbox"></div>
+                                <div class="exercise-details">
+                                    <div class="exercise-name">${ex.name}</div>
+                                    <div class="exercise-reps">${ex.reps}</div>
+                                </div>
+                            </li>
+                        `;
+                    });
+
+                    dayCard.innerHTML = `
+                        <div class="day-header">
+                            <div class="day-title">${dayData.day}</div>
+                            <button class="reset-btn" onclick="resetDay(${dayIndex})">Reset Day</button>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: ${progressPercent}%"></div>
+                        </div>
+                        <ul class="exercise-list">
+                            ${exercisesHTML}
+                        </ul>
+                    `;
+                }
+
+                container.appendChild(dayCard);
+            });
+        }
+
+        // Initialize App
+        checkAndResetDaily();
+        renderWorkouts();
+            </script>
+</body>
+</html>
