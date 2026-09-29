@@ -6,88 +6,119 @@
     <title>My Daily Workout Tracker</title>
     <style>
         :root {
-            --bg-color: #0b0718;
-            --card-bg: #161029;
-            --accent-color: #a855f7;
-            --accent-gradient: linear-gradient(135deg, #a855f7, #ec4899);
-            --text-color: #f3e8ff;
-            --text-muted: #a78bfa;
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --accent-gold: #fbbf24;
+            --accent-title: #f1f5f9;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --completed-bg: rgba(16, 185, 129, 0.12);
+            --completed-border: rgba(16, 185, 129, 0.4);
             --completed-color: #10b981;
-            --border-color: #2e2152;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            background-color: var(--bg-color);
-            background-image: radial-gradient(circle at 50% 0%, #2e1065 0%, var(--bg-color) 70%);
+            background: var(--bg-gradient);
+            background-attachment: fixed;
             color: var(--text-color);
-            padding: 15px;
-            max-width: 800px;
+            padding: 20px 16px;
+            max-width: 600px;
             margin: 0 auto;
-            padding-bottom: 50px;
+            padding-bottom: 60px;
             min-height: 100vh;
         }
 
         header {
             text-align: center;
-            margin-bottom: 20px;
-            padding: 20px 15px;
-            background-color: var(--card-bg);
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            margin-bottom: 24px;
+            padding: 24px 20px;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 20px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
         h1 {
-            background: var(--accent-gradient);
+            font-size: 1.7rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-size: 1.8rem;
-            margin-bottom: 5px;
-            font-weight: 800;
+            margin-bottom: 6px;
         }
 
         p.subtitle {
             color: var(--text-muted);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .global-actions {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .reset-btn {
+            background: rgba(244, 63, 94, 0.1);
+            color: #fb7185;
+            border: 1px solid rgba(244, 63, 94, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(8px);
+        }
+
+        .reset-btn:active {
+            transform: scale(0.96);
+            background: rgba(244, 63, 94, 0.2);
         }
 
         .day-card {
-            background-color: var(--card-bg);
-            border-radius: 16px;
-            padding: 18px;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 20px;
             margin-bottom: 20px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--card-border);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
         }
 
         .day-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
+            margin-bottom: 14px;
         }
 
         .day-title {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 700;
-            color: #d8b4fe;
+            color: var(--accent-title);
+            letter-spacing: -0.3px;
         }
 
         .progress-container {
             width: 100%;
-            background-color: #0b0718;
+            background: rgba(15, 23, 42, 0.6);
             border-radius: 10px;
-            height: 8px;
-            margin-bottom: 15px;
+            height: 6px;
+            margin-bottom: 16px;
             overflow: hidden;
         }
 
@@ -95,7 +126,8 @@
             height: 100%;
             background: linear-gradient(90deg, #10b981, #34d399);
             width: 0%;
-            transition: width 0.3s ease;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 10px;
         }
 
         .exercise-list {
@@ -105,35 +137,36 @@
         .exercise-item {
             display: flex;
             align-items: center;
-            padding: 12px;
-            background-color: #0b0718;
-            border-radius: 10px;
-            margin-bottom: 8px;
+            padding: 14px 16px;
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 14px;
+            margin-bottom: 10px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            border: 1px solid transparent;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.03);
         }
 
-        .exercise-item:hover {
-            border-color: var(--accent-color);
+        .exercise-item:active {
+            transform: scale(0.98);
         }
 
         .exercise-item.completed {
-            background-color: rgba(16, 185, 129, 0.12);
-            border-color: rgba(16, 185, 129, 0.4);
+            background: var(--completed-bg);
+            border-color: var(--completed-border);
         }
 
         .exercise-item.completed .exercise-name {
             text-decoration: line-through;
-            color: #6ee7b7;
+            color: #a7f3d0;
+            opacity: 0.8;
         }
 
         .checkbox {
             width: 22px;
             height: 22px;
-            border-radius: 6px;
-            border: 2px solid var(--text-muted);
-            margin-right: 12px;
+            border-radius: 7px;
+            border: 2px solid rgba(148, 163, 184, 0.4);
+            margin-right: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -144,14 +177,15 @@
         .exercise-item.completed .checkbox {
             background-color: var(--completed-color);
             border-color: var(--completed-color);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
         }
 
         .checkbox::after {
             content: '✓';
-            color: white;
-            font-weight: bold;
+            color: #0f172a;
+            font-weight: 800;
             display: none;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .exercise-item.completed .checkbox::after {
@@ -164,44 +198,26 @@
 
         .exercise-name {
             font-weight: 600;
-            font-size: 0.98rem;
+            font-size: 0.95rem;
+            color: #f1f5f9;
         }
 
         .exercise-reps {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
-
-        .reset-btn {
-            background-color: transparent;
-            color: #f43f5e;
-            border: 1px solid #f43f5e;
-            padding: 6px 12px;
-            border-radius: 8px;
-            cursor: pointer;
             font-size: 0.8rem;
-            font-weight: 600;
-            transition: all 0.2s ease;
-        }
-
-        .reset-btn:hover {
-            background-color: #f43f5e;
-            color: white;
-        }
-
-        .global-actions {
-            text-align: center;
-            margin-bottom: 20px;
+            color: var(--text-muted);
+            margin-top: 3px;
+            font-weight: 400;
         }
 
         .rest-day-box {
             text-align: center;
-            padding: 20px;
-            background-color: rgba(168, 85, 247, 0.08);
-            border-radius: 10px;
-            color: #c084fc;
+            padding: 24px;
+            background: rgba(251, 191, 36, 0.05);
+            border: 1px dashed rgba(251, 191, 36, 0.2);
+            border-radius: 14px;
+            color: var(--accent-gold);
             font-weight: 600;
+            font-size: 0.95rem;
         }
     </style>
 </head>
@@ -209,11 +225,11 @@
 
     <header>
         <h1>Workout Tracker</h1>
-        <p class="subtitle">Daily Routine & Progress Tracker</p>
+        <p class="subtitle">Aesthetic Personal Routine</p>
     </header>
 
     <div class="global-actions">
-        <button class="reset-btn" onclick="resetAllWorkouts()">Sabhi Workouts Uncheck / Reset Karein</button>
+        <button class="reset-btn" onclick="resetAllWorkouts()">✨ Sabhi Workouts Reset Karein</button>
     </div>
 
     <div id="workout-container"></div>
@@ -338,7 +354,7 @@
                             <div class="day-title">${dayData.day}</div>
                         </div>
                         <div class="rest-day-box">
-                            😴 Aaj Rest Day hai! Recovery aur proper sleep lein.
+                            😴 Rest Day — Focus on Active Recovery & Sleep
                         </div>
                     `;
                 } else {
@@ -368,7 +384,7 @@
                     dayCard.innerHTML = `
                         <div class="day-header">
                             <div class="day-title">${dayData.day}</div>
-                            <button class="reset-btn" onclick="resetDay(${dayIndex})">Reset Day</button>
+                            <button class="reset-btn" onclick="resetDay(${dayIndex})">Reset</button>
                         </div>
                         <div class="progress-container">
                             <div class="progress-bar" style="width: ${progressPercent}%"></div>
