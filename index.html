@@ -201,7 +201,7 @@
 
     <header>
         <h1>Workout Tracker</h1>
-        <p class="subtitle">Daily Routine & Progress Reset Application</p>
+        <p class="subtitle">Manual Reset Tracker Application</p>
     </header>
 
     <div class="global-actions">
@@ -282,18 +282,6 @@
                 isRestDay: true
             }
         ];
-
-        // Auto-reset logic checking date change
-        function checkAndResetDaily() {
-            const today = new Date().toDateString();
-            const lastSavedDate = localStorage.getItem('workout_last_date');
-
-            if (lastSavedDate !== today) {
-                // Naya din aagaya hai - reset saare state
-                localStorage.removeItem('workout_state');
-                localStorage.setItem('workout_last_date', today);
-            }
-        }
 
         // Get saved workout state
         function getSavedState() {
@@ -397,8 +385,7 @@
         }
 
         // Initialize App
-        checkAndResetDaily();
         renderWorkouts();
-            </script>
+    </script>
 </body>
 </html>
