@@ -67,4 +67,564 @@ header p{
 
 .exercise{
   display:flex;
-  align
+  align-items:center;
+  gap:12px;
+  padding:13px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.exercise:last-child{
+  border-bottom:0;
+}
+
+.exercise input{
+  width:20px;
+  height:20px;
+  accent-color:var(--green);
+}
+
+.exercise label{
+  flex:1;
+  cursor:pointer;
+}
+
+.exercise small{
+  display:block;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+.progress-box{
+  background:var(--soft);
+  border-radius:12px;
+  overflow:hidden;
+  height:12px;
+  margin-top:12px;
+}
+
+.progress{
+  height:100%;
+  width:0%;
+  background:var(--green);
+  transition:.3s;
+}
+
+button{
+  background:#20252c;
+  color:#f5f7fa;
+  border:1px solid #343a43;
+  border-radius:10px;
+  padding:12px 18px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+button:hover{
+  background:#2a3038;
+}
+
+.reset{
+  margin-top:10px;
+  width:100%;
+}
+
+.timer{
+  text-align:center;
+}
+
+.timer-display{
+  font-size:42px;
+  font-weight:bold;
+  margin:10px 0;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+
+.stat{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:16px;
+  text-align:center;
+}
+
+.stat strong{
+  display:block;
+  font-size:25px;
+}
+
+.muted{
+  color:var(--muted);
+}
+
+@media(max-width:600px){
+  header h1{font-size:25px}
+  .container{padding:12px}
+  .card{padding:16px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Workout Tracker</h1>
+  <p>Aesthetic Personal Routine</p>
+</header>
+
+<div class="container">
+
+  <div class="stats">
+    <div class="stat">
+      <strong id="done">0</strong>
+      <span class="muted">Completed</span>
+    </div>
+
+    <div class="stat">
+      <strong id="total">0</strong>
+      <span class="muted">Total Exercises</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <b>Overall Progress</b>
+    <div class="progress-box">
+      <div class="progress" id="progress"></div>
+    </div>
+    <p class="muted" id="percent">0% completed</p>
+  </div>
+
+  <!-- MONDAY -->
+  <div class="card">
+    <div class="day-title">Monday — Chest + Triceps + Core</div>
+
+    <div class="exercise">
+      <input type="checkbox" id="mon1">
+      <label for="mon1">Incline Dumbbell Press
+        <small>3 × 8–12</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="mon2">
+      <label for="mon2">Chest Press
+        <small>3 × 10–12</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="mon3">
+      <label for="mon3">Chest Fly
+        <small>2 × 12–15</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="mon4">
+      <label for="mon4">Rope Pushdown
+        <small>3 × 10–15</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="mon5">
+      <label for="mon5">Overhead Triceps Extension
+        <small>2 × 10–15</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="mon6">
+      <label for="mon6">Plank
+        <small>3 × 45–60 sec</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="mon7">
+      <label for="mon7">Reverse Crunch
+        <small>3 × 12–15</small>
+      </label>
+    </div>
+  </div>
+
+  <!-- TUESDAY -->
+  <div class="card">
+    <div class="day-title">Tuesday — Back + Biceps + Cardio</div>
+
+    <div class="exercise">
+      <input type="checkbox" id="tue1">
+      <label for="tue1">Lat Pulldown
+        <small>3 × 8–12</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="tue2">
+      <label for="tue2">Seated Cable Row
+        <small>3 × 10–12</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="tue3">
+      <label for="tue3">Chest Supported Row
+        <small>3 × 10–12</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="tue4">
+      <label for="tue4">Face Pull
+        <small>2 × 12–15</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="tue5">
+      <label for="tue5">Dumbbell Curl
+        <small>3 × 10–12</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="tue6">
+      <label for="tue6">Hammer Curl
+        <small>2 × 10–12</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="tue7">
+      <label for="tue7">Incline Treadmill
+        <small>20 minutes</small>
+      </label>
+    </div>
+  </div>
+
+  <!-- WEDNESDAY -->
+  <div class="card">
+    <div class="day-title">Wednesday — Quads + Glutes</div>
+
+    <div class="exercise">
+      <input type="checkbox" id="wed1">
+      <label for="wed1">Leg Press
+        <small>3 × 10–12</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="wed2">
+      <label for="wed2">Goblet Squat
+        <small>3 × 10–12</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="wed3">
+      <label for="wed3">Leg Extension
+        <small>2 × 12–15</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="wed4">
+      <label for="wed4">Hip Thrust
+        <small>3 × 10–12</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="wed5">
+      <label for="wed5">Walking Lunges
+        <small>2 × 10 each leg</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="wed6">
+      <label for="wed6">Hip Abduction
+        <small>2 × 15–20</small>
+      </label>
+    </div>
+  </div>
+
+  <!-- THURSDAY -->
+  <div class="card">
+    <div class="day-title">Thursday — Shoulders + Core</div>
+
+    <div class="exercise">
+      <input type="checkbox" id="thu1">
+      <label for="thu1">Dumbbell Shoulder Press
+        <small>3 × 8–12</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="thu2">
+      <label for="thu2">Lateral Raises
+        <small>3 × 12–15</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="thu3">
+      <label for="thu3">Rear Delt Fly
+        <small>3 × 12–15</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="thu4">
+      <label for="thu4">Face Pull
+        <small>2 × 12–15</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="thu5">
+      <label for="thu5">Cable Crunch
+        <small>3 × 12–15</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="thu6">
+      <label for="thu6">Dead Bug
+        <small>3 × 10 each side</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="thu7">
+      <label for="thu7">Side Plank
+        <small>2 × 30–45 sec each side</small>
+      </label>
+    </div>
+  </div>
+
+  <!-- FRIDAY -->
+  <div class="card">
+    <div class="day-title">Friday — Hamstrings + Glutes + Calves</div>
+
+    <div class="exercise">
+      <input type="checkbox" id="fri1">
+      <label for="fri1">Romanian Deadlift
+        <small>3 × 8–12</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="fri2">
+      <label for="fri2">Leg Curl
+        <small>3 × 10–15</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="fri3">
+      <label for="fri3">Hip Thrust
+        <small>3 × 10–12</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="fri4">
+      <label for="fri4">Step Ups
+        <small>2 × 10 each leg</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="fri5">
+      <label for="fri5">Standing Calf Raise
+        <small>3 × 15–20</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="fri6">
+      <label for="fri6">Seated Calf Raise
+        <small>2 × 15–20</small>
+      </label>
+    </div>
+  </div>
+
+  <!-- SATURDAY -->
+  <div class="card">
+    <div class="day-title">Saturday — Active Recovery</div>
+
+    <div class="exercise">
+      <input type="checkbox" id="sat1">
+      <label for="sat1">Incline Treadmill
+        <small>30–40 minutes</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="sat2">
+      <label for="sat2">Cycling
+        <small>15–20 minutes</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="sat3">
+      <label for="sat3">Bird Dog
+        <small>2 × 10 each side</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="sat4">
+      <label for="sat4">Dead Bug
+        <small>2 × 10 each side</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="sat5">
+      <label for="sat5">Plank
+        <small>2 × 30–45 sec</small>
+      </label>
+    </div>
+
+    <div class="exercise">
+      <input type="checkbox" id="sat6">
+      <label for="sat6">Stretching
+        <small>10–15 minutes</small>
+      </label>
+    </div>
+  </div>
+
+  <!-- SUNDAY -->
+  <div class="card">
+    <div class="day-title">Sunday — Rest 💤</div>
+    <p class="muted">Complete rest / light walking only.</p>
+  </div>
+
+  <div class="card timer">
+    <h3>Workout Timer</h3>
+    <div class="timer-display" id="timer">00:00</div>
+
+    <button onclick="startTimer()">START</button>
+    <button onclick="pauseTimer()">PAUSE</button>
+    <button onclick="resetTimer()">RESET</button>
+  </div>
+
+  <button class="reset" onclick="resetAll()">
+    RESET ALL CHECKBOXES
+  </button>
+
+</div>
+
+<script>
+const boxes = document.querySelectorAll('input[type="checkbox"]');
+
+function saveProgress(){
+  const data = {};
+
+  boxes.forEach(box=>{
+    data[box.id] = box.checked;
+  });
+
+  localStorage.setItem(
+    "workoutTrackerChecks",
+    JSON.stringify(data)
+  );
+
+  updateProgress();
+}
+
+function loadProgress(){
+  const saved = localStorage.getItem("workoutTrackerChecks");
+
+  if(saved){
+    const data = JSON.parse(saved);
+
+    boxes.forEach(box=>{
+      box.checked = data[box.id] === true;
+    });
+  }
+
+  updateProgress();
+}
+
+function updateProgress(){
+  let done = 0;
+
+  boxes.forEach(box=>{
+    if(box.checked) done++;
+  });
+
+  const total = boxes.length;
+  const percent = total
+    ? Math.round((done / total) * 100)
+    : 0;
+
+  document.getElementById("done").textContent = done;
+  document.getElementById("total").textContent = total;
+  document.getElementById("percent").textContent =
+    percent + "% completed";
+
+  document.getElementById("progress").style.width =
+    percent + "%";
+}
+
+boxes.forEach(box=>{
+  box.addEventListener("change", saveProgress);
+});
+
+function resetAll(){
+  if(confirm("Reset all workout checkboxes?")){
+    boxes.forEach(box=>{
+      box.checked = false;
+    });
+
+    localStorage.removeItem("workoutTrackerChecks");
+    updateProgress();
+  }
+}
+
+/* TIMER */
+let seconds = 0;
+let timerInterval = null;
+
+function updateTimer(){
+  const min = String(Math.floor(seconds / 60)).padStart(2,"0");
+  const sec = String(seconds % 60).padStart(2,"0");
+
+  document.getElementById("timer").textContent =
+    min + ":" + sec;
+}
+
+function startTimer(){
+  if(timerInterval) return;
+
+  timerInterval = setInterval(()=>{
+    seconds++;
+    updateTimer();
+  },1000);
+}
+
+function pauseTimer(){
+  clearInterval(timerInterval);
+  timerInterval = null;
+}
+
+function resetTimer(){
+  pauseTimer();
+  seconds = 0;
+  updateTimer();
+}
+
+loadProgress();
+updateTimer();
+</script>
+
+</body>
+</html>
