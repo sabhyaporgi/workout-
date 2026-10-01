@@ -1,405 +1,140 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Daily Workout Tracker</title>
-    <style>
-        :root {
-            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --card-border: rgba(255, 255, 255, 0.08);
-            --accent-gold: #fbbf24;
-            --accent-title: #f1f5f9;
-            --text-color: #f8fafc;
-            --text-muted: #94a3b8;
-            --completed-bg: rgba(16, 185, 129, 0.12);
-            --completed-border: rgba(16, 185, 129, 0.4);
-            --completed-color: #10b981;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Fat Loss Workout</title>
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-        body {
-            background: var(--bg-gradient);
-            background-attachment: fixed;
-            color: var(--text-color);
-            padding: 20px 16px;
-            max-width: 600px;
-            margin: 0 auto;
-            padding-bottom: 60px;
-            min-height: 100vh;
-        }
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f5f7;
+  color: #222;
+  padding-bottom: 40px;
+}
 
-        header {
-            text-align: center;
-            margin-bottom: 24px;
-            padding: 24px 20px;
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 20px;
-            border: 1px solid var(--card-border);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
+header {
+  background: #111;
+  color: white;
+  padding: 28px 20px;
+  text-align: center;
+}
 
-        h1 {
-            font-size: 1.7rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 6px;
-        }
+header h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
 
-        p.subtitle {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
+header p {
+  color: #ccc;
+  font-size: 14px;
+}
 
-        .global-actions {
-            text-align: center;
-            margin-bottom: 24px;
-        }
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px 15px;
+}
 
-        .reset-btn {
-            background: rgba(244, 63, 94, 0.1);
-            color: #fb7185;
-            border: 1px solid rgba(244, 63, 94, 0.3);
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            backdrop-filter: blur(8px);
-        }
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
 
-        .reset-btn:active {
-            transform: scale(0.96);
-            background: rgba(244, 63, 94, 0.2);
-        }
+.stat {
+  background: white;
+  border-radius: 15px;
+  padding: 16px 8px;
+  text-align: center;
+  box-shadow: 0 3px 12px rgba(0,0,0,.06);
+}
 
-        .day-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid var(--card-border);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-        }
+.stat strong {
+  display: block;
+  font-size: 22px;
+  margin-bottom: 4px;
+}
 
-        .day-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 14px;
-        }
+.stat span {
+  font-size: 12px;
+  color: #777;
+}
 
-        .day-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--accent-title);
-            letter-spacing: -0.3px;
-        }
+.progress-box {
+  background: white;
+  padding: 18px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 3px 12px rgba(0,0,0,.06);
+}
 
-        .progress-container {
-            width: 100%;
-            background: rgba(15, 23, 42, 0.6);
-            border-radius: 10px;
-            height: 6px;
-            margin-bottom: 16px;
-            overflow: hidden;
-        }
+.progress-bar {
+  height: 12px;
+  background: #e5e5e5;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 10px;
+}
 
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #10b981, #34d399);
-            width: 0%;
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 10px;
-        }
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: #111;
+  transition: .3s;
+}
 
-        .exercise-list {
-            list-style: none;
-        }
+.day {
+  background: white;
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 3px 14px rgba(0,0,0,.07);
+}
 
-        .exercise-item {
-            display: flex;
-            align-items: center;
-            padding: 14px 16px;
-            background: rgba(15, 23, 42, 0.5);
-            border-radius: 14px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-        }
+.day-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
 
-        .exercise-item:active {
-            transform: scale(0.98);
-        }
+.day-header h2 {
+  font-size: 19px;
+}
 
-        .exercise-item.completed {
-            background: var(--completed-bg);
-            border-color: var(--completed-border);
-        }
+.tag {
+  font-size: 11px;
+  background: #111;
+  color: white;
+  padding: 6px 9px;
+  border-radius: 20px;
+}
 
-        .exercise-item.completed .exercise-name {
-            text-decoration: line-through;
-            color: #a7f3d0;
-            opacity: 0.8;
-        }
+.focus {
+  color: #777;
+  font-size: 13px;
+  margin-bottom: 15px;
+}
 
-        .checkbox {
-            width: 22px;
-            height: 22px;
-            border-radius: 7px;
-            border: 2px solid rgba(148, 163, 184, 0.4);
-            margin-right: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-            flex-shrink: 0;
-        }
+.exercise {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 5px;
+  border-bottom: 1px solid #eee;
+}
 
-        .exercise-item.completed .checkbox {
-            background-color: var(--completed-color);
-            border-color: var(--completed-color);
-            box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
-        }
+.exercise:last-child {
+  border-bottom: none;
+}
 
-        .checkbox::after {
-            content: '✓';
-            color: #0f172a;
-            font-weight: 800;
-            display: none;
-            font-size: 13px;
-        }
-
-        .exercise-item.completed .checkbox::after {
-            display: block;
-        }
-
-        .exercise-details {
-            flex-grow: 1;
-        }
-
-        .exercise-name {
-            font-weight: 600;
-            font-size: 0.95rem;
-            color: #f1f5f9;
-        }
-
-        .exercise-reps {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: 3px;
-            font-weight: 400;
-        }
-
-        .rest-day-box {
-            text-align: center;
-            padding: 24px;
-            background: rgba(251, 191, 36, 0.05);
-            border: 1px dashed rgba(251, 191, 36, 0.2);
-            border-radius: 14px;
-            color: var(--accent-gold);
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-    </style>
-</head>
-<body>
-
-    <header>
-        <h1>Workout Tracker</h1>
-        <p class="subtitle">Aesthetic Personal Routine</p>
-    </header>
-
-    <div class="global-actions">
-        <button class="reset-btn" onclick="resetAllWorkouts()">✨ Sabhi Workouts Reset Karein</button>
-    </div>
-
-    <div id="workout-container"></div>
-
-    <script>
-        const workoutPlan = [
-            {
-                day: "Day 1: Chest + Triceps (+ Abs)",
-                exercises: [
-                    { name: "Incline Dumbbell Press (Chest)", reps: "3 Sets x 10–12 Reps" },
-                    { name: "Dumbbell Flyes / Chest Press Machine", reps: "3 Sets x 12 Reps" },
-                    { name: "Tricep Rope Pushdowns", reps: "3 Sets x 12 Reps" },
-                    { name: "Overhead Dumbbell Extension (Triceps)", reps: "3 Sets x 12 Reps" },
-                    { name: "Abs: Plank", reps: "3 Sets x 45 Sec" },
-                    { name: "Abs: Leg Raises", reps: "3 Sets x 12-15 Reps" }
-                ]
-            },
-            {
-                day: "Day 2: Back + Biceps (+ Light Cardio)",
-                exercises: [
-                    { name: "Lat Pulldown (Back)", reps: "3 Sets x 10–12 Reps" },
-                    { name: "Seated Cable Row (Back)", reps: "3 Sets x 10–12 Reps" },
-                    { name: "Dumbbell Bicep Curls", reps: "3 Sets x 12 Reps" },
-                    { name: "Hammer Curls (Biceps)", reps: "3 Sets x 12 Reps" },
-                    { name: "Cardio: Incline Treadmill Walk", reps: "10–15 mins" }
-                ]
-            },
-            {
-                day: "Day 3: Quads + Glutes (+ Abs)",
-                exercises: [
-                    { name: "Goblet Squats (Quads & Glutes)", reps: "3 Sets x 10–12 Reps" },
-                    { name: "Leg Extensions (Quads Focus)", reps: "3 Sets x 12–15 Reps" },
-                    { name: "Hip Thrusts / Glute Bridges (Glutes Focus)", reps: "3 Sets x 12 Reps" },
-                    { name: "Walking Lunges", reps: "3 Sets x 10 Steps (har leg)" },
-                    { name: "Abs: Russian Twists", reps: "3 Sets x 20 Reps" },
-                    { name: "Abs: Crunches", reps: "3 Sets x 15 Reps" }
-                ]
-            },
-            {
-                day: "Day 4: Shoulders + Abs (+ Light Cardio)",
-                exercises: [
-                    { name: "Dumbbell Shoulder Press", reps: "3 Sets x 10–12 Reps" },
-                    { name: "Lateral Raises (Side Shoulders)", reps: "3 Sets x 12–15 Reps" },
-                    { name: "Face Pulls (Rear Shoulders & Posture)", reps: "3 Sets x 15 Reps" },
-                    { name: "Abs: Mountain Climbers", reps: "3 Sets x 30 Sec" },
-                    { name: "Abs: Reverse Crunches", reps: "3 Sets x 12 Reps" },
-                    { name: "Cardio: Cycling / Elliptical", reps: "10–15 mins" }
-                ]
-            },
-            {
-                day: "Day 5: Hamstrings + Calves (+ Abs)",
-                exercises: [
-                    { name: "Romanian Deadlifts (Hamstrings Focus)", reps: "3 Sets x 10–12 Reps" },
-                    { name: "Lying Leg Curls (Hamstrings)", reps: "3 Sets x 12 Reps" },
-                    { name: "Standing Calf Raises", reps: "3 Sets x 15–20 Reps" },
-                    { name: "Seated Calf Raises", reps: "3 Sets x 15 Reps" },
-                    { name: "Abs: Bicycle Crunches", reps: "3 Sets x 15 Reps" },
-                    { name: "Abs: Side Planks", reps: "3 Sets x 30 Sec" }
-                ]
-            },
-            {
-                day: "Day 6: Full Core / Abs + Active Recovery Cardio",
-                exercises: [
-                    { name: "Hanging / Captain's Chair Knee Raises", reps: "3 Sets x 12 Reps" },
-                    { name: "Plank Hold", reps: "3 Sets x 45-60 Sec" },
-                    { name: "Deadbug & Bird-Dog (Deep Core)", reps: "3 Sets x 12 Reps" },
-                    { name: "Incline Treadmill Brisk Walk", reps: "20 Minutes" },
-                    { name: "Full Body Stretching", reps: "10 Minutes" }
-                ]
-            },
-            {
-                day: "Day 7: REST DAY",
-                isRestDay: true
-            }
-        ];
-
-        function getSavedState() {
-            const state = localStorage.getItem('workout_state');
-            return state ? JSON.parse(state) : {};
-        }
-
-        function saveState(state) {
-            localStorage.setItem('workout_state', JSON.stringify(state));
-        }
-
-        function toggleExercise(dayIndex, exIndex) {
-            const state = getSavedState();
-            const key = `${dayIndex}_${exIndex}`;
-            state[key] = !state[key];
-            saveState(state);
-            renderWorkouts();
-        }
-
-        function resetDay(dayIndex) {
-            const state = getSavedState();
-            workoutPlan[dayIndex].exercises.forEach((_, exIndex) => {
-                delete state[`${dayIndex}_${exIndex}`];
-            });
-            saveState(state);
-            renderWorkouts();
-        }
-
-        function resetAllWorkouts() {
-            if (confirm("Kya aap saare days ke workouts reset karna chahte hain?")) {
-                localStorage.removeItem('workout_state');
-                renderWorkouts();
-            }
-        }
-
-        function renderWorkouts() {
-            const container = document.getElementById('workout-container');
-            const state = getSavedState();
-            container.innerHTML = '';
-
-            workoutPlan.forEach((dayData, dayIndex) => {
-                const dayCard = document.createElement('div');
-                dayCard.className = 'day-card';
-
-                if (dayData.isRestDay) {
-                    dayCard.innerHTML = `
-                        <div class="day-header">
-                            <div class="day-title">${dayData.day}</div>
-                        </div>
-                        <div class="rest-day-box">
-                            😴 Rest Day — Focus on Active Recovery & Sleep
-                        </div>
-                    `;
-                } else {
-                    let completedCount = 0;
-                    const totalExercises = dayData.exercises.length;
-
-                    dayData.exercises.forEach((_, exIndex) => {
-                        if (state[`${dayIndex}_${exIndex}`]) completedCount++;
-                    });
-
-                    const progressPercent = Math.round((completedCount / totalExercises) * 100);
-
-                    let exercisesHTML = '';
-                    dayData.exercises.forEach((ex, exIndex) => {
-                        const isCompleted = !!state[`${dayIndex}_${exIndex}`];
-                        exercisesHTML += `
-                            <li class="exercise-item ${isCompleted ? 'completed' : ''}" onclick="toggleExercise(${dayIndex}, ${exIndex})">
-                                <div class="checkbox"></div>
-                                <div class="exercise-details">
-                                    <div class="exercise-name">${ex.name}</div>
-                                    <div class="exercise-reps">${ex.reps}</div>
-                                </div>
-                            </li>
-                        `;
-                    });
-
-                    dayCard.innerHTML = `
-                        <div class="day-header">
-                            <div class="day-title">${dayData.day}</div>
-                            <button class="reset-btn" onclick="resetDay(${dayIndex})">Reset</button>
-                        </div>
-                        <div class="progress-container">
-                            <div class="progress-bar" style="width: ${progressPercent}%"></div>
-                        </div>
-                        <ul class="exercise-list">
-                            ${exercisesHTML}
-                        </ul>
-                    `;
-                }
-
-                container.appendChild(dayCard);
-            });
-        }
-
-        renderWorkouts();
-    </script>
-</body>
-</html>
+.exercise input {
+  width: 20
